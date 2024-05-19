@@ -270,7 +270,7 @@ function patchFactory(id: string, mod: (module: any, exports: any, require: Webp
         if (!patch.all) patches.splice(i--, 1);
     }
 
-    function patchedFactory(module: any, exports: any, require: WebpackInstance) {
+    wreq.m[id] = function (module: any, exports: any, require: WebpackInstance) {
         if (wreq == null && IS_DEV) {
             if (!webpackNotInitializedLogged) {
                 webpackNotInitializedLogged = true;
@@ -326,7 +326,7 @@ function patchFactory(id: string, mod: (module: any, exports: any, require: Webp
                 logger.error("Error while firing callback for Webpack subscription:\n", err, filter, callback);
             }
         }
-    }
+    };
 
-    return patchedFactory;
+    return wreq.m[id];
 }
